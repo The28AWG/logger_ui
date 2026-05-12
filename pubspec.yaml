@@ -1,0 +1,27 @@
+name: logger_ui
+description: "Виджеты Flutter для просмотра потока LogRecord из пакета logger."
+version: 0.0.1
+homepage:
+publish_to: none
+
+environment:
+  sdk: ^3.11.5
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  logger:
+    git:
+      url: https://github.com/The28AWG/logger.git
+
+dev_dependencies:
+  dart_code_metrics_presets: ^2.29.0
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  generate: true

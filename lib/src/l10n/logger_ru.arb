@@ -1,0 +1,68 @@
+{
+    "@@locale": "ru",
+
+    "appBarTitle": "Логи",
+    "@appBarTitle": {
+        "description": "Title of the log viewer screen"
+    },
+
+    "pendingDropped": "очередь −{count}",
+    "@pendingDropped": {
+        "description": "Label shown when pending log records were dropped",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+
+    "filterTooltip": "Фильтр",
+    "@filterTooltip": {
+        "description": "Tooltip for the filter action button in the app bar"
+    },
+
+    "sectionMessage": "Сообщение",
+    "@sectionMessage": {
+        "description": "Section label for log message in detail view"
+    },
+
+    "sectionContext": "Контекст",
+    "@sectionContext": {
+        "description": "Section label for context map in detail view"
+    },
+
+    "sectionError": "Error",
+    "@sectionError": {
+        "description": "Section label for error in detail view"
+    },
+
+    "sectionException": "Исключение",
+    "@sectionException": {
+        "description": "Section label for exception in detail view"
+    },
+
+    "sectionStackTrace": "Стек вызовов",
+    "@sectionStackTrace": {
+        "description": "Section label for stack trace in detail view"
+    },
+
+    "filterSheetTitle": "Фильтр",
+    "@filterSheetTitle": {
+        "description": "Title of the filter bottom sheet"
+    },
+
+    "searchHint": "Поиск в сообщении, имени, теге, контексте…",
+    "@searchHint": {
+        "description": "Hint text for the search field in filter sheet"
+    },
+
+    "clearSearchTooltip": "Сбросить",
+    "@clearSearchTooltip": {
+        "description": "Tooltip for the clear search button"
+    },
+
+    "minLevelLabel": "Минимальный уровень",
+    "@minLevelLabel": {
+        "description": "Label above the log level chips in filter sheet"
+    }
+}
