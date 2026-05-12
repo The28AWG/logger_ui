@@ -1,39 +1,100 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# logger_ui
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+Flutter-виджеты для просмотра потока [`LogRecord`](https://github.com/The28AWG/logger) из пакета `logger`.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## Возможности
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+- **`LogViewerScreen`** — полноэкранный `Scaffold` со списком записей логов в реальном времени.
+- Батчинг входящего потока: события копятся в очередь и сбрасываются в UI пачками за один кадр, не блокируя поток.
+- Ограничение памяти: хранится не более `maxEntries` последних записей (по умолчанию 20 000).
+- Защита от взрыва очереди: если между кадрами скопилось больше `maxPendingBetweenFrames` записей, лишние отбрасываются (счётчик в AppBar).
+- Фильтрация по уровню (`trace` / `debug` / `info` / `warning` / `error` / `fatal`) через боттом-шит.
+- Текстовый поиск по сообщению, имени логгера, тегу, ошибке и полям контекста.
+- Автопрокрутка к новым записям; бейдж «↓ N» при ручной прокрутке вверх.
+- Детальный просмотр записи (боттом-шит с `SelectionArea`).
+- Локализация: `en`, `ru` (легко расширяется).
 
-## Features
+## Установка
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  logger_ui:
+    git:
+      url: https://github.com/The28AWG/logger_ui.git
 ```
 
-## Additional information
+Добавьте делегаты локализации в `MaterialApp`:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+import 'package:logger_ui/logger_ui.dart';
+
+MaterialApp(
+  localizationsDelegates: LoggerLn.localizationsDelegates,
+  supportedLocales: LoggerLn.supportedLocales,
+  home: const LogViewerScreen(),
+);
+```
+
+## Использование
+
+### Минимальный пример
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:logger_ui/logger_ui.dart';
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+    localizationsDelegates: LoggerLn.localizationsDelegates,
+    supportedLocales: LoggerLn.supportedLocales,
+    home: const LogViewerScreen(),
+  );
+}
+```
+
+### Параметры `LogViewerScreen`
+
+| Параметр | Тип | По умолчанию | Описание |
+|---|---|---|---|
+| `controller` | `LoggerController?` | глобальный `loggerController` | Контроллер логгера |
+| `maxEntries` | `int` | `20000` | Максимум записей в памяти |
+| `maxPendingBetweenFrames` | `int` | `8000` | Лимит очереди между кадрами |
+| `maxRecordsPerFrame` | `int` | `2500` | Максимум записей, переносимых в модель за один кадр |
+
+### Свой контроллер
+
+```dart
+final myController = LoggerController();
+final logger = Logger('app', controller: myController);
+
+LogViewerScreen(controller: myController)
+```
+
+## Структура пакета
+
+```
+lib/
+├── logger_ui.dart                  # публичный экспорт
+└── src/
+    ├── log_viewer_screen.dart       # основной экран
+    ├── log_viewer_row.dart          # строка списка
+    ├── log_viewer_detail_widgets.dart # детальный просмотр
+    ├── log_viewer_filter_sheet.dart # боттом-шит фильтров
+    ├── log_viewer_formatting.dart   # форматирование времени и цветов
+    └── l10n/                        # локализация
+```
+
+## Требования
+
+- Flutter `>=1.17.0`
+- Dart `^3.11.5`
+- Пакет [`logger`](https://github.com/The28AWG/logger)
+
+## Лицензия
+
+[BSD 3-Clause](LICENSE)
